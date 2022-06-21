@@ -1,38 +1,10 @@
-import { Link, Redirect } from "react-router-dom";
-import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import Inscription from "./inscription";
 import { connect } from "react-redux";
-import {
-  Button,
-  Layout,
-  Menu,
-  Image,
-  Card,
-  Avatar,
-  Divider,
-  Row,
-  Col,
-  Tabs,
-  Modal,
-} from "antd";
+import { Layout, Menu, Card, Tabs, Modal } from "antd";
 import "antd/dist/antd.css";
-import {
-  SettingOutlined,
-  EditOutlined,
-  EllipsisOutlined,
-  DownloadOutlined,
-  TwitterOutlined,
-  FacebookOutlined,
-  LinkedinOutlined,
-  UserOutlined,
-  MessageOutlined,
-  LikeOutlined,
-  StarOutlined,
-  MailOutlined,
-  CalendarOutlined,
-  AppstoreOutlined,
-  LinkOutlined,
-} from "@ant-design/icons";
+import { EditOutlined, MailOutlined, CalendarOutlined, AppstoreOutlined } from "@ant-design/icons";
 const { Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
@@ -43,7 +15,7 @@ function SideBarDroite(props) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isConnect, setIsConnect] = useState(false);
   const [isConnectProfil, setIsConnectProfil] = useState(false);
-  // const [theme, setTheme] = useState("")
+
 
   //Base de donnée Data
   const themeData = [
@@ -74,23 +46,11 @@ function SideBarDroite(props) {
     setIsModalVisible(false);
   };
 
-  // var handleClickPubli = (e) => {
-  //   if (props.token == null) {
-  //     showModal();
-  //   } else {
-  //     setIsConnectProfil(true);
-  //   }
-  // };
 
- 
-
-  // if (isConnectProfil) {
-  //   return <Redirect to="/nouvelPublication" />;
-  // }
 
   var publiTheme = themeData.map((theme, i) => {
     return (
-      <Menu.Item key="i">
+      <Menu.Item key={theme+i}>
         {" "}
         <Link to={`/pageTheme/${theme}`}> {theme} </Link>
       </Menu.Item>
@@ -118,6 +78,7 @@ function SideBarDroite(props) {
         <SubMenu key="sub1" icon={<AppstoreOutlined />} title="Thématique">
           {publiTheme}
         </SubMenu>
+
         {props.token ?
         <Menu.Item
           //onClick={() => handleClick()}
@@ -125,10 +86,12 @@ function SideBarDroite(props) {
           icon={<CalendarOutlined />}
         > <Link to="/pageprofil">Mon compte</Link>
         </Menu.Item>
+
         :
+
         <Menu.Item
           onClick={() => showModal()}
-          key="2"
+          key="3"
           icon={<CalendarOutlined />}
         > Mon compte
         </Menu.Item>
@@ -137,14 +100,16 @@ function SideBarDroite(props) {
         {props.token ?
         <Menu.Item
           //onClick={() => handleClickPubli()}
-          key="link"
+          key="4"
           icon={<EditOutlined />}
         > <Link to="/nouvelPublication">Nouvelle publication</Link>
         </Menu.Item>
+
         :
+        
         <Menu.Item
           onClick={() => showModal()}
-          key="2"
+          key="5"
           icon={<CalendarOutlined />}
         > Nouvelle Publication
         </Menu.Item>

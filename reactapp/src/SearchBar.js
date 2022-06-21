@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ArrowLeftOutlined, StopOutlined } from '@ant-design/icons';
+import { StopOutlined } from '@ant-design/icons';
 import "antd/dist/antd.css";
 import "./SearchBar.css";
 import { Redirect } from "react-router-dom";

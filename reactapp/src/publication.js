@@ -1,18 +1,14 @@
+import './publication.css'
 import React, { useState, useEffect} from "react";
 import { useParams } from 'react-router-dom';
-import {
-  Radio,  Layout,  Menu,  Button,  Row,  Col,  Tabs,  List,  Space,  Comment,  Form,
-  Input, Alert} from "antd";
+import { Radio,  Layout, Button,  Row,  Col,  Tabs,  Space, Form, Input, Alert} from "antd";
 import { connect } from "react-redux";
 
 import Plot from 'react-plotly.js';
-import SearchBar from "./Components/SearchBar";
-import "./publication.css";
-import EnTete from "./EnTete";
+
 import SideBarDroite from "./SideBarDroite";
-import AGORA from "../src/image/AGORA.png"
-import Inscription from "./inscription";
 import Header from "./Header";
+import PiedDePage from "./piedDePage";
 import Commentaires from "./commentaires"
 
 function Publication(props) {
@@ -29,10 +25,7 @@ function Publication(props) {
   const [comment, setComment] = useState("");
   const [commentaire, setCommentaire] = useState("");
   const [boutonValiCom, setBoutonValiCom] = useState("Envoyer le commentaire");
-  const [commentairesList, setCommentairesList] = useState([]);
-  const [currentPubli, setCurrentPubli] = useState();
-  const [publiExist, setPubliExist] = useState(false);
-  const [list, setList] = useState();
+  const [commentairesList, setCommentairesList] = useState([]);;
   const [stats, setStats] = useState();
   const [alreadyVoted, setAlreadyVoted] = useState(false);
   const [alreadyCommented, setAlreadyCommented] = useState(false);
@@ -40,31 +33,13 @@ function Publication(props) {
   const [nbVoters, setNbVoters] = useState(0);
   const [userComment, setUserComment] = useState("");
   const [connected, setConnected] = useState(false);
-  const [count, setCount] = useState(0);
-  const [counter, setCounter] = useState(0)
-  const [likeComment, setLikeComment] = useState(false)
   const [gender, setGender] = useState();
   const [publicationTitre, setPublicationTitre] = useState();
-  const [likes, setLikes] = useState(0);
-  const [dislikes, setDislikes] = useState(0);
-  const [action, setAction] = useState(null);
-  const [actionLike, setActionLike] = useState("");
-  const [actionDislike, setActionDislike] = useState("");
-  const [isConnect, setIsConnect] = useState(false);
-  const [isConnectProfil, setIsConnectProfil] = useState(true);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-
+ 
 
   const [listVotes, setListVotes] = useState([{vote: "J'Adore", color: "#33EE22", border:""}, {vote: "Je suis Pour", color: "#93c47d", border:""}, {vote: "Je suis Mitigé(e)", color: "#ffd966", border:""}, {vote: "Je suis Contre", color: "#ffa500", border:""}, {vote: "Je Déteste", color: "#f44336", border:""}])
 
-  //const [border, setBorder] = useState("");
-
   var newComment = {};
-  var topComments = []
-
-  const [idC, setIdC] = useState(0)
-
 
   const { TextArea } = Input;
   const { TabPane } = Tabs;
@@ -80,8 +55,7 @@ function Publication(props) {
   var dateComment;
   var token = props.token;
   
-  const [content, setContent] = useState({_id:"",thematique:"", titre:"" ,texte: "", image: "", date_publication: '', statut: "", motsCle: '',
-  publiToken: "", user_id: "", __v: ""});
+  const [content, setContent] = useState({_id:"",thematique:"", titre:"" ,texte: "", image: "", date_publication: '', statut: "", motsCle: '', user_id: "", __v: ""});
 
   const [user, setUser] = useState({ id:"", username: "",  email: "", password:"", token: "", __v: 0,
   gender: "", dateOfBirth: null, CSP: "", civilState: "", numberOfcChild: ""});
@@ -89,7 +63,7 @@ function Publication(props) {
 
   var dateFormat = function (date) {
     var newDate = new Date(date);
-    var format = newDate.getFullYear()  + "/" + (newDate.getMonth() + 1) + "/" + newDate.getDate()  ;
+    var format = newDate.getFullYear()  + "/" + ("0" +(newDate.getMonth() + 1)).slice(-2) + "/" + ("0" +(newDate.getDate())).slice(-2)  ;
     return format;
   };
 
@@ -191,6 +165,7 @@ var publicationT=publicationTitre
     }
   }, [selection]); 
   
+  // highlight border of selection
   var handleBorder = (element) => {
     var items = [];
     var index = element.element;
@@ -278,18 +253,17 @@ var publicationT=publicationTitre
     setMessageCom("Le commentaire a bien été supprimé.")
     getSelectedPublication(); 
   
-    //setAlreadyCommented(false)
   }
 
   var labels = [];
   var values = [];
-  var genderLabels = [];
-  var genderValues = [];
+  // var genderLabels = [];
+  // var genderValues = [];
 
-  if(gender) {
-    gender.map(gender => genderLabels.push(gender.genre));
-    gender.map(gender => genderValues.push(gender.nbre));
-  }
+  // if(gender) {
+  //   gender.map(gender => genderLabels.push(gender.genre));
+  //   gender.map(gender => genderValues.push(gender.nbre));
+  // }
 
   if(stats) {
     
@@ -302,30 +276,7 @@ var publicationT=publicationTitre
       setStatus(true)
     } 
   }
-//show Modal
-  var showModal = () => {
-    setIsModalVisible(true);
-  };
 
-  const handleOk = (e) => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = (e) => {
-    setIsModalVisible(false);
-  };
-
-  var handleClick = async () => {
-    if (props.token == null) {
-        setIsConnectProfil(false)}
-
-        if (isConnectProfil == false){
-      showModal();}
-  };
-
-  var deleteClick = (e) => {
-    setIsConnectProfil(false)
-  }
 
 
   var data = [
@@ -338,20 +289,20 @@ var publicationT=publicationTitre
       hoverinfo: 'none'
     }];
 
-    var dataGender = [
-      {
-        values: genderValues, 
-        labels: genderLabels,
-        type: "pie",
-        hoverinfo: 'none',
-        text: genderLabels,
-        hoverinfo: 'none',
-        marker: {'colors': [
-          "#FFC806", 
-          "#EDAC06",  
-         ] 
-      },
-      }];
+    // var dataGender = [
+    //   {
+    //     values: genderValues, 
+    //     labels: genderLabels,
+    //     type: "pie",
+    //     hoverinfo: 'none',
+    //     text: genderLabels,
+    //     hoverinfo: 'none',
+    //     marker: {'colors': [
+    //       "#FFC806", 
+    //       "#EDAC06",  
+    //      ] 
+    //   },
+    //   }];
 
 
   return (
@@ -387,10 +338,10 @@ var publicationT=publicationTitre
               {content.titre}
             </h1>
 
-            <div style={{display:'flex', alignItems:'center', margin:10, padding:10}}>
+            <div style={{display:'flex', flexDirection:'column', alignItems:'center', margin:10, padding:10, height: "100%", width:"100%"}}>
             <img
               src={content.image}
-              style={{ width: "40%", margin:5, position: "relative" }}
+              style={{ width: "80%", margin:5, position: "relative" }}
             />
             
             <p style={{padding:5}}>{content.texte}</p>
@@ -559,7 +510,7 @@ var publicationT=publicationTitre
     
       </Content> 
       </Layout>
-      <Footer style={{ textAlign: "center" }}></Footer>
+      <PiedDePage />
     </Layout>
   );
 }
@@ -576,10 +527,7 @@ function mapDispatchToProps(dispatch) {
   },addComment: function(newComment){
         dispatch({ type: 'addComment', newComment: newComment},         
           )
-  }, updateNbLikes: function(commentairesList){
-    dispatch({ type: 'updateLikes', listComments: commentairesList},         
-      )
-}
+  }
 }
 }
 

@@ -1,79 +1,16 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Link, Redirect } from "react-router-dom";
-import {
-  Layout,
-  Menu,
-  Breadcrumb,
-  Image,
-  Card,
-  Avatar,
-  Divider,
-  Row,
-  Col,
-  Tabs,
-  List,
-  Space,
-  Tag,
-  BackTop,
-  Badge,
-  Modal,
-  Statistic,
-} from "antd";
-import "antd/dist/antd.css";
+import React, { useState, useEffect} from "react";
+import { Link } from "react-router-dom";
+import { Layout, Card, Row, Col, Tabs, List, Space, BackTop, Statistic} from "antd";
 import { connect } from "react-redux";
-import {
-  SettingOutlined,
-  EditOutlined,
-  EllipsisOutlined,
-  DownloadOutlined,
-  TwitterOutlined,
-  FacebookOutlined,
-  LinkedinOutlined,
-  UserOutlined,
-  MessageOutlined,
-  LikeOutlined,
-  StarOutlined,
-  MailOutlined,
-  CalendarOutlined,
-  AppstoreOutlined,
-  LinkOutlined,
-  DownCircleFilled,
-  SolutionOutlined,
-  ArrowUpOutlined,
-  EditFilled,
-} from "@ant-design/icons";
+import { UserOutlined, MessageOutlined, LikeOutlined, DownCircleFilled, SolutionOutlined, EditFilled } from "@ant-design/icons";
 import SideBarDroite from "./SideBarDroite";
-import EnTete from "./EnTete";
-import Plot from 'react-plotly.js';
-import SearchBar from "./Components/SearchBar";
 import Carousel from "react-bootstrap/Carousel";
-import Button from "react-bootstrap/Button";
-import AGORA from "../src/image/AGORA.png"
 import Header from "./Header";
+import PiedDePage from "./piedDePage";
 
 
 const { Content, Footer } = Layout;
-
 const { TabPane } = Tabs;
-
-// const gridStyle = {
-//   width: "25%",
-//   textAlign: "center",
-// };
-
-//questions aléatoires
-const listData = [];
-for (let i = 0; i < 3; i++) {
-  listData.push({
-    href: "https://ant.design",
-    title: `THEME ${i + 1}`,
-    avatar: "https://joeschmoe.io/api/v1/random",
-    description: "sous-theme ou tag perso",
-    content:
-      "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
-    key: {i},
-  });
-}
 
 const IconText = ({ icon, text }) => (
   <Space>
@@ -82,8 +19,6 @@ const IconText = ({ icon, text }) => (
   </Space>
 );
 
-// import {Redirect} from 'react-router-dom';
-// import {connect} from 'react-redux';
 
 function Accueil(props) {
   const [latest, setLatest] = useState([]);
@@ -91,9 +26,6 @@ function Accueil(props) {
   const [populaires, setPopulaires] = useState([]);
   const [votes, setVotes] = useState([]);
   
-
-
- 
 
   //Récupération les publications à l'initialisation
   useEffect(() => {
@@ -103,7 +35,7 @@ function Accueil(props) {
       const body = await publications.json();
       // console.log("3 articles", body.latest);
       setLatest(body.latest);
-      console.log(body);
+      //console.log(body);
     };
     findPublications();
 
@@ -111,7 +43,7 @@ function Accueil(props) {
     const popPublications = async () => {
       const plusPopulaires = await fetch("publications/populaires");
       const res_populaires = await plusPopulaires.json();
-      console.log("populaires: ", res_populaires.topPublications);
+      //console.log("populaires: ", res_populaires.topPublications);
       setPopulaires(res_populaires.topPublications);
     };
     popPublications();
@@ -120,25 +52,18 @@ function Accueil(props) {
     const allPublications = async () => {
       const listPublications = await fetch("publications/allPublications");
       const response = await listPublications.json();
-      console.log("all: ", response.allPublications);
+      //console.log("all: ", response.allPublications);
       setAllPublications(response.allPublications);
-    
-      
+
     };
     allPublications();
   }, []);
 
 
-
-
-
-
-
-
   var publiCards = latest.map((publication, i) => {
     var toRead = publication;
     return (
-      <Carousel.Item key={i}>
+      <Carousel.Item key={"publicard "+i}>
         <img style={{
         display: "flex",
         flexDirection: "column",
@@ -161,7 +86,7 @@ function Accueil(props) {
             
           }}>{publication.titre}</h3>
          
-          <Link class="btn btn-danger" role="button" to={`/publication/${toRead._id}`}>
+          <Link className="btn btn-danger" role="button" to={`/publication/${toRead._id}`}>
               VOIR
           </Link>
         </Carousel.Caption>
@@ -212,17 +137,14 @@ function Accueil(props) {
       
       // console.log("3 articles", body.latest);
       setVotes(body.allVotes);
-      console.log(body)
+      //console.log(body)
     };
     findVotes();
   }, []);
 
  
- 
 
   return (
-
-
 
     /* header */
     <Layout className='layout' style={{ margin: 10, backgroundColor:'white'}}>
@@ -236,11 +158,11 @@ function Accueil(props) {
         >
           <Row justify="center">
             <Tabs type="card" style={{ width: 900, height: 600, padding: 15 }}>
-              <TabPane tab="A la une " key="1">
+              <TabPane tab="A la une " key="tabpane1">
                 <Carousel>{publiCards}</Carousel>
               </TabPane>
 
-              <TabPane tab="Les plus populaires" key="2">
+              <TabPane tab="Les plus populaires" key="tabpane2">
                 <Carousel>{topPublications}</Carousel>
               </TabPane>
             </Tabs>
@@ -250,7 +172,6 @@ function Accueil(props) {
               justify="start"
               span={12}
               style={{
-
                 backgroundColor: "transparent",
                 textAlign: "center",
                 marginTop: "70px",
@@ -354,58 +275,13 @@ Cette solution permet à l’issue de chaque question de :<br/>
           <Row
             style={{
               backgroundColor: "#C9F6F5",
-
               borderRadius: "20px",
               marginTop: "60px",
               marginBottom: "60px",
             }}
           >
-            <Col
-              span={12}
-              style={{
-                color: "black",
-                backgroundColor: "transparent",
-                textAlign: "center",
-                padding: "20px",
-              }}
-            >
-              {" "}
-              <h3
-                style={{
-                  color: "black",
-                }}
-              >
-                {" "}
-                Votre publication interesse-t-elle du monde ?
-              </h3>
-              <p>
-                Découvrez les avis des autres utilisateurs... Lorem Ipsum is
-                simply dummy text of the printing and typesetting industry.
-              </p>
-            </Col>
 
-            <Col
-              span={12}
-              style={{
-                backgroundColor: "transparent",
-                textAlign: "center",
-                align: "middle",
-              }}
-            >
-              <Button
-                type="primary"
-                size={100}
-                style={{
-                  backgroundColor: "#0E9C98",
-                  borderColor: "#0E9C98",
-                  borderRadius: "30px",
-                  marginLeft: "50px",
-                  marginTop: "60px",
-                }}
-              >
-                Crée ton profil <SolutionOutlined />
-              </Button>
-            </Col>
+
           </Row>
           <div
             className="site-statistic-demo-card"
@@ -448,39 +324,7 @@ Cette solution permet à l’issue de chaque question de :<br/>
           </div>
         </Content>
       </Layout>
-      <Footer className="footer" style={{ textAlign: "left" }}>
-        {" "}
-        <Row>
-          <Col span={8}>
-            NOTRE GROUPE
-            <ul className="un">
-              <li>A propos</li>
-              <li>Notre vision</li>
-              <li>Contact</li>
-            </ul>
-          </Col>
-          <Col span={8}>
-            {" "}
-            ASSISTANCE
-            <ul className="un">
-              <li>Aide</li>
-              <li>Guide</li>
-              <li>Mentions legales</li>
-              <li>CGU</li>
-              <li>Cookies</li>
-            </ul>
-          </Col>
-          <Col span={8}>
-            {" "}
-            RESEAUX SOCIAUX
-            <ul className="un">
-              <li>Facebook</li>
-              <li>Instagram</li>
-              <li>Twitter</li>
-            </ul>
-          </Col>
-        </Row>
-      </Footer>
+      <PiedDePage />
       <>
         <BackTop />
       </>

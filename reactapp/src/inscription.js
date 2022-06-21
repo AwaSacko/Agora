@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { Input, Button, Modal } from 'antd';
-import { Link, Redirect, withRouter } from 'react-router-dom'
+import { Input, Button } from 'antd';
 import { connect } from 'react-redux'
 //import { CookiesProvider } from "react-cookie";
 //import Cookies from 'js-cookie';
@@ -99,7 +98,6 @@ function Inscription(props) {
     }, [props.token])
 
      if (userExists) { 
-    //   return <Link to={window.location.href}/>
         return <div style={{ color: "#214C74", fontWeight: "bolder", fontSize: "2em"}}>vous etes connecté!</div>
     }
 

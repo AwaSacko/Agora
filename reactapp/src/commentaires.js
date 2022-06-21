@@ -1,24 +1,18 @@
 import React, { useState, useEffect, createElement } from "react";
 import { Avatar, Comment, Tooltip} from "antd";
-
 import { LikeOutlined, LikeFilled, DislikeOutlined, DislikeFilled} from "@ant-design/icons";
-
 
 
 function Commentaires(props) {
 
-    const [actionLike, setActionLike] = useState(props.thumbUp);
-    const [actionDislike, setActionDislike] = useState("");
-    const [likeComment, setLikeComment] = useState(false)
-    const [dislikeComment, setDislikeComment] = useState(false)
-
-    const [idC, setIdC] = useState(0)
+    const [actionLike, setActionLike] = useState(false);
+    const [actionDislike, setActionDislike] = useState(false);
     const [countLike, setCountLike] = useState(0)
     const [totalLike, setTotalLike] = useState(props.nb_likes)
-    const [countDislike, setCountDislike] = useState(0)
+    const [countDislike, setCountDislike] = useState()
     const [totalDislike, setTotalDislike] = useState(props.nb_dislikes)
 
-    const [idComment, setIdComment] = useState("");
+    const [idComment, setIdComment] = useState(props.id);
 
     useEffect(() => {
       if (props.alreadyLiked) {
@@ -77,14 +71,12 @@ var handleDislike = (id_comment) => {
         } else {
             setActionDislike(false);
             setCountDislike(0)
-            //setCountLike(countLike)
             setTotalDislike(totalDislike-1)
         }
 }
 
 useEffect(() => {
-  console.log("check like: ", countLike);
-  console.log("check dislike: ", countDislike);
+ 
   var updateLikes = async () => {
     await fetch("/comments/updateLikes", {
       method: "POST",

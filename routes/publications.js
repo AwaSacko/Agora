@@ -6,9 +6,57 @@ var voteModel = require('../models/votes')
 var commentModel = require('../models/comments');
 const mongoose = require('mongoose');
 
+var uid2 = require('uid2');
+
 
 var id;
 var token;
+
+router.post('/post-publication', async function(req, res, next){
+  var error = []
+  var result = false
+  var savePublication
+  var user = await userModel.findOne({token: req.body.token})
+  
+  var idd = user.id
+
+
+  console.log('onclick back', req.body)
+
+
+  if(req.body.titrePublication == ''
+  || req.body.contenuPublication == ''
+  ){
+    error.push('champs vides')
+  }
+
+  if(error.length == 0){
+    var newPublication = new publicationModel({
+      thematique: req.body.themePublication,
+      titre: req.body.titrePublication,
+      texte: req.body.contenuPublication,
+      image: req.body.image,
+      date_publication: req.body.datePublication,
+      statut: false,
+      motsCle: req.body.motClePublication,
+      user_id: idd,
+    })
+  
+    savePublication = await newPublication.save()
+ 
+    var id = ''    
+    
+    if(savePublication){
+      result = true
+      id = savePublication.id
+    }
+  }
+
+  console.log('publiID', id)
+
+    res.json({result, id})
+  })
+
 
 router.get('/lastPublications', async function(req, res, next){
     var result = false;
@@ -94,8 +142,6 @@ router.get('/selectedPublication', async function(req, res, next){
   };
   //console.log("publication selected: ",publiToDisplay)
 
-   
-
   // checker si le user est connecté et récupérer ses infos
   var user;
   var votes
@@ -113,13 +159,15 @@ router.get('/selectedPublication', async function(req, res, next){
   
   var voters = await voteModel.find({publication_id: id}).populate('user_id');
   console.log("voters: ", voters.length)
-
+ 
   var gender = [{genre: "hommes", nbre:0}, {genre: "femmes", nbre:0}]
   for(var i=0;i<voters.length;i++){
-    if(voters[i].user_id.gender == 'homme'){
+    if(voters[i].gender) {
+      if(voters[i].user_id.gender == 'homme'){
       gender[0].nbre++
     } else {
       gender[1].nbre++
+    }
     }
   }
 
@@ -153,25 +201,11 @@ router.delete('/deleteComment', async function(req, res, next){
 
   // suppression du (ou des) commentaires. Il n'y aura qu'un seul commentaire par la suite.
  
-  await commentModel.deleteMany({publication_id: id, user_id:user._id });
+  await commentModel.deleteOne({publication_id: id, user_id:user._id });
   console.log("après suppr ",commentModel.find({publication_id: id, user_id:user._id }));
   
   res.json();
 })
-
-
-router.get('/nouveaute', async function(req, res, next){
-  id = req.query.id;
-
-  var publication = await publicationModel.findById(id);
-  var publiToDisplay = publication
-
-  if(publiToDisplay){
-    result = true
-  }
-  res.json({result, publiToDisplay, id})
-}) 
-
 
 
 module.exports = router;

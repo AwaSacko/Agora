@@ -46,8 +46,6 @@ router.post('/sign-up', async function (req, res, next) {
       email: req.body.emailFromFront,
       password: hash,
       token: uid2(32),
-     
-     
     })
 
     saveUser = await newUser.save()
@@ -98,60 +96,8 @@ router.post('/sign-in', async function (req, res, next) {
     }
   }
  
-
-
   res.json({ result, user, error, token })
-
-
 })
-
-router.post('/post-publication', async function(req, res, next){
-  var error = []
-  var result = false
-  var publiToken = ''
-  var savePublication
-  var user = await userModel.findOne({token: req.body.token})
-  
-  var idd = user.id
-
-
-  console.log('onclick back', req.body)
-
-
-  if(req.body.titrePublication == ''
-  || req.body.contenuPublication == ''
-  ){
-    error.push('champs vides')
-  }
-
-  if(error.length == 0){
-    var newPublication = new publicationModel({
-      thematique: req.body.themePublication,
-      titre: req.body.titrePublication,
-      texte: req.body.contenuPublication,
-      image: req.body.image,
-      date_publication: req.body.datePublication,
-      statut: false,
-      motsCle: req.body.motClePublication,
-      publiToken: uid2(32),
-      user_id: idd,
-    })
-  
-    savePublication = await newPublication.save()
- 
-var id = ''    
-    
-    if(savePublication){
-      result = true
-      publiToken = savePublication.publiToken
-      id = savePublication.id
-    }
-  }
-
-  console.log('publiID', id)
-
-    res.json({result, publiToken, id})
-  })
 
   // route qui permet de récupérer les infos user
 router.get('/infoUser', async function(req, res, next){
@@ -226,38 +172,17 @@ var publicationVote = [];
   if (user){
     var myArticles = await publicationModel.find({user_id : user._id}).sort({date_publication: -1})
   }
-    
-
 res.json({publication, publicationVote, myArticles})
  })
 
 
 
-  
-
-
 // pour bar de recherche
  router.get('/searchPublication', async function(req, res, next){
    var allPublications = await publicationModel.find()
-   
    res.json({allPublications})
   })
 
-//pour ajouter un vote sur un publication [SI]
-router.post('/addvote', async function (req, res, next) {
-  var result = false
-
-  var user = await userModel.findOne({ token: req.body.token })
-
-  if (user) {
-
-    result = true
-    token = user.token
-  } else {
-    result = false
-  }
-  res.json({ user, token, result })
-})
 
 // pour ajouter un commentaire sur un publication [SI]
 // router.post('/addcommentaire', async function(req, res, next){
@@ -285,7 +210,7 @@ router.get('/allVotes', async function(req, res, next){
 
 router.get('/searchPublication', async function(req, res, next){
   var allPublications = await publicationModel.find()
-  console.log(allPublications)
+  console.log('check publication search', allPublications)
 
   res.json({allPublications})
  })

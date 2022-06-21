@@ -1,72 +1,21 @@
-
 import './App.css';
-
 import { connect } from 'react-redux'
-import React, { useState, useEffect, useRef } from "react";
-import { Link, Redirect } from "react-router-dom";
-import {
-  Layout,
-  Menu,
-  Breadcrumb,
-  Button,
-  Image,
-  Cascader,
-  Select,
-  Card,
-  Form,
-  Avatar,
-  Divider,
-  Row,
-  Col,
-  InputNumber,
-  Tabs,
-  List,
-  Space,
-  Tag,
-  BackTop,
-  Badge,
-  Modal,
-  Statistic,
-} from "antd";
+import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
+import { Layout, Button, Cascader, Select, Form, Row, Col, InputNumber, BackTop } from "antd";
 import "antd/dist/antd.css";
-
-import {
-  SettingOutlined,
-  EditOutlined,
-  EllipsisOutlined,
-  DownloadOutlined,
-  TwitterOutlined,
-  FacebookOutlined,
-  LinkedinOutlined,
-  UserOutlined,
-  MessageOutlined,
-  LikeOutlined,
-  StarOutlined,
-  MailOutlined,
-  CalendarOutlined,
-  AppstoreOutlined,
-  LinkOutlined,
-  DownCircleFilled,
-  SolutionOutlined,
-  ArrowUpOutlined,
-  EditFilled,
-} from "@ant-design/icons";
 import SideBarDroite from "./SideBarDroite";
-import EnTete from "./EnTete";
+import Header from './Header'
+import piedDePage from './piedDePage';
 
 
-const { Header, Content, Footer, Sider } = Layout;
-
-
-
+const { Content, Footer, Sider } = Layout;
 const { Option } = Select;
 //import { CookiesProvider } from "react-cookie";
 //import Cookies from 'js-cookie';
 
 
-
 function Profilcomp(props) {
-
 
     const [gender, setGender] = useState('')
     const [dateOfBirth, setDateOfBirth] = useState('')
@@ -78,11 +27,6 @@ function Profilcomp(props) {
     //Cookies.set('token', props.token)
 
   
-
-
-
-      
-
     var handleSubmitComp = async () => {
 
         const data = await fetch('/addProfil', {
@@ -90,7 +34,6 @@ function Profilcomp(props) {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: `genderFromFront=${gender}&dateOfBirth=${dateOfBirth}&csp=${csp}&civilState=${civilState}
             &child=${numberOfcChild}&token=${props.token}`
-
         })
 
         const body = await data.json()
@@ -107,9 +50,6 @@ function Profilcomp(props) {
         console.log(response)}
 
         ProfilComplete();
-  
-
-
 
     if (validation == true) {
         return (<Redirect to='/pageprofil' />)
@@ -186,64 +126,8 @@ function Profilcomp(props) {
 
     return (
         <Layout className="site-layout-background">
-        <div id="head">
-          <div style={{height:"100px"}}>
-            <Image
-              preview={false}
-              size={30}
-              className="logo"
-              width={150}
-              src="./image/AGORA.png"
-            />
-          </div>
-          <div>
-            {" "}
-            <p style={{ marginLeft: "50px" }}>
-              {" "}
-              Donnez votre avis d'une manière différente{" "}
-            </p>
-            <Button
-              type="primary"
-              size={100}
-              style={{
-                backgroundColor: "rgba(240, 52, 52, 1)",
-                borderColor: "rgba(240, 52, 52, 1)",
-                marginLeft: "50px",
-                boxShadow: "1px 15px 10px grey",
-              }}
-            >
-              Poster votre publication
-            </Button>
-          </div>
-  
-          <div style={{ marginTop: "40px", marginLeft: "40px" }}>
-            {" "}
-            <Button
-              type="text"
-              style={{
-                backgroundColor: "transparent",
-                color: "#214C74",
-  
-                borderColor: "transparent",
-              }}
-            >
-              LOG IN
-            </Button>
-            <Divider type="vertical" />
-            <Button
-              type="link"
-              style={{
-                backgroundColor: "#214C74",
-  
-                borderColor: "#214C74",
-              }}
-            >
-              LOG OUT
-            </Button>
-          </div>
-
         
-          </div>
+        <Header/>
 
 
         <Layout className="site-layout-background">
@@ -275,14 +159,13 @@ function Profilcomp(props) {
         <InputNumber min={1930} max={2010} onSelect={(e) => setDateOfBirth(e.target.value)} className="Login-input" placeholder="DateOfBirth" />
     </Form.Item>
 
+
     <Cascader
         className="cascade"
         options={categorie}
         onChange={onCategorie}
         placeholder="Please select"
     />
-
-
 
 
     <Cascader
@@ -298,47 +181,17 @@ function Profilcomp(props) {
     </Form.Item>
 
 
-
-
     <Button onClick={() => handleSubmitComp()}  >Valider les informations </Button>
     
     </div>
  
-    
-
-            
     </Content>
       </Layout>
       <Footer className="footer" style={{ textAlign: "left" }}>
         {" "}
         <Row>
           <Col span={8}>
-            NOTRE GROUPE
-            <ul class="un">
-              <li>A propos</li>
-              <li>Notre vision</li>
-              <li>Contact</li>
-            </ul>
-          </Col>
-          <Col span={8}>
-            {" "}
-            ASSISTANCE
-            <ul class="un">
-              <li>Aide</li>
-              <li>Guide</li>
-              <li>Mentions legales</li>
-              <li>CGU</li>
-              <li>Cookies</li>
-            </ul>
-          </Col>
-          <Col span={8}>
-            {" "}
-            RESEAUX SOCIAUX
-            <ul class="un">
-              <li>Facebook</li>
-              <li>Instagram</li>
-              <li>Twitter</li>
-            </ul>
+            <piedDePage/>
           </Col>
         </Row>
       </Footer>
@@ -346,10 +199,7 @@ function Profilcomp(props) {
         <BackTop />
       </>
     </Layout>
-        
-
-
-        
+              
 
     );
 }
@@ -357,9 +207,6 @@ function Profilcomp(props) {
 function mapStateToProps(state) {
     return { token: state.token }
 }
-
-
-
 
 
 export default connect(

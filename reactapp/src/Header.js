@@ -1,25 +1,24 @@
 import React, { useState, useEffect, } from "react";
 import { Link } from "react-router-dom";
-import Button from "react-bootstrap/Button";
+import { Button } from "antd";
 import AGORA from "../src/image/AGORA.png"
-import SearchBar from "./Components/SearchBar";
+import SearchBar from "./SearchBar";
 import Inscription from "./inscription";
 import { connect } from "react-redux";
 import {Image, Modal } from "antd";
+import { AntDesignOutlined } from "@ant-design/icons";
 
 
 function Header(props) {
 
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [isConnect, setIsConnect] = useState(false);
-    const [isConnectProfil, setIsConnectProfil] = useState(false);
     const [publicationTitre, setPublicationTitre] = useState();
     var token = props.token;
 
     const findPublications = async () => {
       const toutePublication = await fetch("/searchPublication");
       const res_publication = await toutePublication.json();
-      console.log("ma res_publication", res_publication.allPublications)
+      //console.log("ma res_publication", res_publication.allPublications)
       setPublicationTitre(res_publication.allPublications)
     }; 
 
@@ -73,10 +72,10 @@ function Header(props) {
           <div>
             {token == null ?
             <Button  onClick={() => handleClick()}
-          size={20}
+            size={20}
             type="text"
             style={{
-             
+              color: "#FFFFFF",
               backgroundColor: "#214C74",
               borderColor: "#214C74",
             }}
@@ -90,7 +89,7 @@ function Header(props) {
             type="link"
             type="text"
             style={{
-             
+              color: "#FFFFFF",
               backgroundColor: "#214C74",
               borderColor: "#214C74",
             }}
@@ -111,7 +110,7 @@ function Header(props) {
        
         <div>
           
-         
+        {token ?
           
           <Button
             type="primary"
@@ -122,9 +121,26 @@ function Header(props) {
               marginLeft: "50px",
               boxShadow: "1px 15px 10px grey",
             }}
-          >
-            Poster votre publication
+          > 
+           <Link to="/nouvelPublication">Poster votre publication</Link>
           </Button>
+
+          :
+
+          <Button 
+            onClick={showModal}
+            type="primary"
+            size={100}
+            style={{
+              backgroundColor: "rgba(240, 52, 52, 1)",
+              borderColor: "rgba(240, 52, 52, 1)",
+              marginLeft: "50px",
+              boxShadow: "1px 15px 10px grey",
+            }}
+          > Poster votre publication
+          </Button>
+
+        }
         </div>
 
         

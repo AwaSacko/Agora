@@ -1,53 +1,13 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
-import {
-  Button,
-  Layout,
-  Menu,
-  Breadcrumb,
-  Image,
-  Card,
-  Avatar,
-  Divider,
-  Row,
-  Col,
-  Input,
-  Tooltip,
-  Radio,
-  Form,
-  Tabs,
-  List,
-  Space,
-  Tag,
-  BackTop,
-  Badge,
-  Upload,
-  message,
-  Select,
-  InputNumber,
-} from "antd";
+import { Button, Layout, Divider, Row, Col, Input, Tooltip, Radio, Form, Upload, message, Select, InputNumber} from "antd";
 import "antd/dist/antd.css";
-import {
-  SettingOutlined,
-  EditOutlined,
-  EllipsisOutlined,
-  DownloadOutlined,
-  TwitterOutlined,
-  FacebookOutlined,
-  LinkedinOutlined,
-  UserOutlined,
-  InfoCircleOutlined,
-  MessageOutlined,
-  LikeOutlined,
-  StarOutlined,
-  InboxOutlined,
-} from "@ant-design/icons";
-import EnTete from "./EnTete";
+import { UserOutlined, InfoCircleOutlined, InboxOutlined } from "@ant-design/icons";
+import Header from "./Header";
 const { Option } = Select;
 
-const { Header, Content, Footer, Sider } = Layout;
-// import {Redirect} from 'react-router-dom';
-// import {connect} from 'react-redux';
+const { Content, Footer, Sider } = Layout;
+
 
 const { Dragger } = Upload;
 
@@ -76,7 +36,7 @@ function CompleterProfil(props) {
     
     /* header */
     <Layout className="site-layout-background">
-      <EnTete />
+      <Header/>
       <Content>
         <Row justify="center">
           <Col span="4"></Col>
